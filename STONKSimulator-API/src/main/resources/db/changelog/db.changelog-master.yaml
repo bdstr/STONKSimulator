@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - changeSet:
+      id: placeholder
+      author: marcin.kloczkowski
+      changes:
+        - empty: { }

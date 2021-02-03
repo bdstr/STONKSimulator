@@ -1,0 +1,19 @@
+version: '3'
+services:
+  stonksimulator-api:
+    build: ./STONKSimulator-API
+    ports:
+      - '9000:9000'
+    restart: 'on-failure:5'
+    depends_on:
+      - stonksimulator-db
+  stonksimulator-db:
+    build: ./STONKSimulator-DB
+    ports:
+      - '3306:3306'
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: pwd
+      MYSQL_DATABASE: stonks
+      MYSQL_USER: simulator
+      MYSQL_PASSWORD: pwd

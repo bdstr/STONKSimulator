@@ -1,0 +1,3 @@
+rootProject.name = 'STONKSimulator'
+
+include 'STONKSimulator-API'
