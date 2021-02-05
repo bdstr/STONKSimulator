@@ -48,9 +48,11 @@ class UserControllerTest {
 
         when(userService.register("user", "password")).thenReturn(user);
 
-        mockMvc.perform(post("/register")
-                .param("username", "user")
-                .param("password", "password")
+        mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON).content("""
+                {
+                    "username":"user",
+                    "password":"password"
+                }""")
         ).andExpect(status().isCreated());
 
         verify(userService).register(argumentCaptor.capture(), argumentCaptor.capture());
