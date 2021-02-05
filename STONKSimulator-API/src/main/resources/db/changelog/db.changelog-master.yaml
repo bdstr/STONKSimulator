@@ -1,5 +1,11 @@
 databaseChangeLog:
+#  Tables
   - include:
       file: db/changelog/tables/init-wallets-table.yml
   - include:
       file: db/changelog/tables/init-users-table.yml
+  #   Data inserts
+  - include:
+      file: db/changelog/data/init-data-insert-wallets.yml
+  - include:
+      file: db/changelog/data/init-data-insert-users.yml

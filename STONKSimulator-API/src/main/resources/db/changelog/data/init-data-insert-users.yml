@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021_02_05-initial-data-users
+      author: marcin.kloczkowski
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: "admin"
+              - column:
+                  name: password
+                  value: "{bcrypt}$2a$10$YcMkonO.KlwMLAFMGgPk4OQUNZeyt9rH1s2jK6xu/tKK0Xd8iQhVm"
+              - column:
+                  name: authorities
+                  value: "ROLE_ADMIN"
+              - column:
+                  name: wallet_id
+                  value: "1"

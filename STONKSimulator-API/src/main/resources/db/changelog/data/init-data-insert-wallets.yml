@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021_02_05-initial-data-users
+      author: marcin.kloczkowski
+      changes:
+        - insert:
+            tableName: wallets
+            columns:
+              - column:
+                  name: balance
+                  value: 100000
