@@ -43,6 +43,10 @@ public class UserService extends CrudService<User> {
         }
     }
 
+    public User getByUsername(String username) {
+        return ((UserRepository) repository).findByUsername(username).orElseThrow(EntityNotFoundException::new);
+    }
+
     public User register(String username, String password) {
         if (((UserRepository) repository).findByUsername(username).isEmpty()) {
             User newUser = new User();

@@ -29,7 +29,7 @@ public class TokenAuthenticationFilter extends UsernamePasswordAuthenticationFil
     public TokenAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
 
-        setFilterProcessesUrl("/user/login");
+        setFilterProcessesUrl("/login");
     }
 
     @Override
