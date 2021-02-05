@@ -9,3 +9,9 @@ databaseChangeLog:
               - column:
                   name: balance
                   value: 100000
+        - insert:
+            tableName: wallets
+            columns:
+              - column:
+                  name: balance
+                  value: 100000

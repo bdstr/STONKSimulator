@@ -1,5 +1,6 @@
 package net.kloczkowski.STONKSimulator.API.controller;
 
+import net.kloczkowski.STONKSimulator.API.dto.RegisterDTO;
 import net.kloczkowski.STONKSimulator.API.dto.UserDTO;
 import net.kloczkowski.STONKSimulator.API.model.User;
 import net.kloczkowski.STONKSimulator.API.service.UserService;
@@ -7,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -23,10 +24,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestParam(name = "username") String username,
-                                      @RequestParam(name = "password") String password) {
+    public ResponseEntity<?> register(@RequestBody RegisterDTO register) {
         try {
-            var payload = transformToDTO().apply(userService.register(username, password));
+            var payload = transformToDTO().apply(userService.register(register.getUsername(), register.getPassword()));
 
             return new ResponseEntity<>(payload, HttpStatus.CREATED);
         } catch (Exception e) {
