@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021_02_05-initial-wallets-table
+      author: marcin.kloczkowski
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: wallets
+      changes:
+        - createTable:
+            tableName: wallets
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: wallet_id_pkey
+              - column:
+                  name: balance
+                  type: DOUBLE
+                  constraints:
+                    nullable: false

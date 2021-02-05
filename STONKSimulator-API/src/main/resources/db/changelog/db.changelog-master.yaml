@@ -1,6 +1,5 @@
 databaseChangeLog:
-  - changeSet:
-      id: placeholder
-      author: marcin.kloczkowski
-      changes:
-        - empty: { }
+  - include:
+      file: db/changelog/tables/init-wallets-table.yml
+  - include:
+      file: db/changelog/tables/init-users-table.yml

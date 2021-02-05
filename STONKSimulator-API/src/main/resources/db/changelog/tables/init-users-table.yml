@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021_02_05-initial-users-table
+      author: marcin.kloczkowski
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: users
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: user_id_pkey
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: authorities
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable:
+              - column:
+                  name: wallet_id
+                  type: INT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: user_wallet_id_fkey
+                    references: wallets(id)
