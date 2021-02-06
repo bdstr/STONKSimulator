@@ -1,6 +1,6 @@
 package net.kloczkowski.STONKSimulator.API.controller;
 
-import net.kloczkowski.STONKSimulator.API.dto.RegisterDTO;
+import net.kloczkowski.STONKSimulator.API.dto.RegisterRequest;
 import net.kloczkowski.STONKSimulator.API.dto.UserDTO;
 import net.kloczkowski.STONKSimulator.API.model.User;
 import net.kloczkowski.STONKSimulator.API.service.UserService;
@@ -24,9 +24,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterDTO register) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         try {
-            var payload = transformToDTO().apply(userService.register(register.getUsername(), register.getPassword()));
+            var payload = transformToDTO().apply(userService.register(registerRequest.getUsername(), registerRequest.getPassword()));
 
             return new ResponseEntity<>(payload, HttpStatus.CREATED);
         } catch (Exception e) {
