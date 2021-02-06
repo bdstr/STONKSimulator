@@ -20,6 +20,9 @@ public class OpenPosition implements DbEntity {
 
     private LocalDateTime timestamp;
 
+    @Column(name = "stock_symbol")
+    private String stockSymbol;
+
     @Column(name = "unit_price")
     private double unitPrice;
 

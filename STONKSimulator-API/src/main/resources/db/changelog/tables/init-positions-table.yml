@@ -25,6 +25,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: stock_symbol
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
                   name: unit_price
                   type: DOUBLE
                   constraints:
