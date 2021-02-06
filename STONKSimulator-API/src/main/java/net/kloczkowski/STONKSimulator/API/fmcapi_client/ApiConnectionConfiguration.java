@@ -1,4 +1,4 @@
-package net.kloczkowski.STONKSimulator.API.fmcapi_client.config;
+package net.kloczkowski.STONKSimulator.API.fmcapi_client;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -10,11 +10,11 @@ import java.time.Duration;
 @Configuration
 public class ApiConnectionConfiguration {
 
-    public static final String BASE_URL = "https://financialmodelingprep.com/api/v3";
-    public static final String API_KEY = "0c6f2662564ae2d10f833e44c7e4d918";
+    protected static final String BASE_URL = "https://financialmodelingprep.com/api/v3";
+    protected static final String API_KEY = "0c6f2662564ae2d10f833e44c7e4d918";
 
     @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+    protected RestTemplate restTemplate(RestTemplateBuilder builder) {
 
         return builder
                 .setConnectTimeout(Duration.ofMillis(3000))

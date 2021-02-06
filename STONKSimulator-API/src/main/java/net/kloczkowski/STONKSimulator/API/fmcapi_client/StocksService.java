@@ -1,20 +1,18 @@
 package net.kloczkowski.STONKSimulator.API.fmcapi_client;
 
-import net.kloczkowski.STONKSimulator.API.fmcapi_client.model.StockPrice;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import static net.kloczkowski.STONKSimulator.API.fmcapi_client.config.ApiConnectionConfiguration.API_KEY;
+import static net.kloczkowski.STONKSimulator.API.fmcapi_client.ApiConnectionConfiguration.API_KEY;
 
 @Service
 public class StocksService {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
-    public StocksService() {
+    public StocksService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     public ResponseEntity<StockPrice[]> getStockPrice(String stockSymbol) {
