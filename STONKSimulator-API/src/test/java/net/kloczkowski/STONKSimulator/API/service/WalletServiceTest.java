@@ -2,6 +2,7 @@ package net.kloczkowski.STONKSimulator.API.service;
 
 import net.kloczkowski.STONKSimulator.API.model.User;
 import net.kloczkowski.STONKSimulator.API.model.Wallet;
+import net.kloczkowski.STONKSimulator.API.repository.OpenPositionRepository;
 import net.kloczkowski.STONKSimulator.API.repository.WalletRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,6 +21,9 @@ class WalletServiceTest {
     @Mock
     WalletRepository walletRepository;
 
+    @Mock
+    OpenPositionRepository openPositionRepository;
+
     @InjectMocks
     WalletService walletService;
 
@@ -35,11 +39,16 @@ class WalletServiceTest {
 
         when(walletRepository.findByUser_Username("user")).thenReturn(Optional.of(wallet));
 
-        var result = walletService.getByUser("user");
+        var result = walletService.getWalletByUser("user");
 
         verify(walletRepository).findByUser_Username("user");
 
         assertEquals(wallet.getId(), result.getId());
         assertEquals(wallet.getBalance(), result.getBalance());
+    }
+
+    @Test
+    public void placeSellStockOrderShouldOpenNewPositionAndSubtractMoneyFromWallet() {
+//        TODO
     }
 }

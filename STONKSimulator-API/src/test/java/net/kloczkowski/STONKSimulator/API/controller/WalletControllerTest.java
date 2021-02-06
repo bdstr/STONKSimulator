@@ -40,28 +40,28 @@ class WalletControllerTest {
         user.setId(1L);
         user.setUsername("user");
 
-        OpenPosition openPosition = new OpenPosition();
-        openPosition.setId(1L);
 
         Wallet wallet = new Wallet();
         wallet.setId(1L);
         wallet.setBalance(100_000);
         wallet.setUser(user);
-        wallet.setOpenPositions(new HashSet<>(Set.of(openPosition)));
 
+        OpenPosition openPosition = new OpenPosition();
+        openPosition.setId(1L);
         openPosition.setWallet(wallet);
 
 
-        when(walletService.getByUser("user")).thenReturn(wallet);
+        when(walletService.getWalletByUser("user")).thenReturn(wallet);
+        when(walletService.getOpenPositionsByUser("user")).thenReturn(new HashSet<>(Set.of(openPosition)));
 
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(wallet.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.balance").value(wallet.getBalance()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(wallet.getUser().getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.wallet.id").value(wallet.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.wallet.balance").value(wallet.getBalance()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.wallet.userId").value(wallet.getUser().getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.openPositions[0].id").value(openPosition.getId()));
 
-        verify(walletService).getByUser("user");
+        verify(walletService).getWalletByUser("user");
     }
 }

@@ -3,11 +3,13 @@ package net.kloczkowski.STONKSimulator.API.dto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.kloczkowski.STONKSimulator.API.model.OpenPosition;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.time.LocalDateTime;
 
 @Getter
 @RequiredArgsConstructor
+@Relation(itemRelation = "sell")
 public class OpenPositionDTO {
 
     private final Long id;

@@ -31,6 +31,5 @@ class WalletDTOTest {
         assertEquals(wallet.getId(), walletDTO.getId());
         assertEquals(wallet.getBalance(), walletDTO.getBalance());
         assertEquals(wallet.getUser().getId(), walletDTO.getUserId());
-        assertEquals(wallet.getOpenPositions(), walletDTO.getOpenPositions());
     }
 }
