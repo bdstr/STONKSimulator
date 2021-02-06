@@ -12,6 +12,7 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Set;
 
 @Service
 public class WalletService {
@@ -28,13 +29,18 @@ public class WalletService {
         this.stocksService = stocksService;
     }
 
-    public Wallet getByUser(String username) {
+    public Wallet getWalletByUser(String username) {
         return walletRepository.findByUser_Username(username).orElseThrow(EntityNotFoundException::new);
+    }
+
+    public Set<OpenPosition> getOpenPositionsByUser(String username) {
+        Wallet wallet = walletRepository.findByUser_Username(username).orElseThrow(EntityNotFoundException::new);
+        return wallet.getOpenPositions();
     }
 
     public OpenPosition placeBuyStockOrder(String username, String stockSymbol, double volume) throws Exception {
         StockPrice stockPrice = getStockPriceFromApi(stockSymbol.toUpperCase(Locale.ROOT));
-        Wallet wallet = getByUser(username);
+        Wallet wallet = getWalletByUser(username);
         var priceOfDesiredVolume = stockPrice.getPrice() * volume;
 
         if (wallet.getBalance() < priceOfDesiredVolume) {
@@ -56,7 +62,7 @@ public class WalletService {
 
     public double placeSellStockOrder(String username, Long positionId) throws Exception {
         OpenPosition openPosition = openPositionRepository.findById(positionId).orElseThrow(() -> new Exception("Cannot find position with given id"));
-        Wallet wallet = getByUser(username);
+        Wallet wallet = getWalletByUser(username);
 
         if (!openPosition.getWallet().getUser().getUsername().equals(username)) {
             throw new Exception("Chosen position does not belong to current user");

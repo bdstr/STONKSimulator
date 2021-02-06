@@ -20,7 +20,7 @@ class UserAuthorizationTest extends GenericAuthorizationTest {
         uris.put("/wallet", Set.of("GET"));
         uris.put("/wallet/", Set.of("GET", "POST"));
         uris.put("/wallet/buy", Set.of("POST"));
-        uris.put("/wallet/sell", Set.of("DELETE"));
+        uris.put("/wallet/sell", Set.of("GET"));
         accessibleURIs = uris;
     }
 }

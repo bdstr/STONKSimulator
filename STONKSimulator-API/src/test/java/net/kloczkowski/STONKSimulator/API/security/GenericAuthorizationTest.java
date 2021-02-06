@@ -10,7 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.Set;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -110,13 +111,13 @@ abstract class GenericAuthorizationTest {
     @Test
     void roleHaveAccessToSellStock() throws Exception {
         String uri = "/wallet/sell";
-        String verb = "DELETE";
+        String verb = "GET";
 
         if (accessibleURIs.containsKey(uri) && accessibleURIs.get(uri).contains(verb)) {
-            mockMvc.perform(delete(uri + "/1"))
+            mockMvc.perform(get(uri + "/1"))
                     .andExpect(status().is5xxServerError());
         } else {
-            mockMvc.perform(delete(uri + "/1"))
+            mockMvc.perform(get(uri + "/1"))
                     .andExpect(status().isForbidden());
         }
     }
