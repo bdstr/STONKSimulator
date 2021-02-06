@@ -19,6 +19,7 @@ import java.util.Set;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -63,5 +64,56 @@ class WalletControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.openPositions[0].id").value(openPosition.getId()));
 
         verify(walletService).getWalletByUser("user");
+    }
+
+    @Test
+    public void buyStockShouldReturnBoughtPosition() throws Exception {
+        String uri = "/wallet/buy";
+
+        Wallet wallet = new Wallet();
+        wallet.setId(1L);
+
+        OpenPosition openPosition = new OpenPosition();
+        openPosition.setId(1L);
+        openPosition.setVolume(1);
+        openPosition.setWallet(wallet);
+
+        when(walletService.placeBuyStockOrder("user", "AAPL", 1)).thenReturn(openPosition);
+
+        mockMvc.perform(post(uri).contentType(MediaType.APPLICATION_JSON).content("""
+                {
+                    "stock_symbol":"AAPL",
+                    "volume":1
+                }"""))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(openPosition.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.volume").value(openPosition.getVolume()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.stockSymbol").value(openPosition.getStockSymbol()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.walletId").value(wallet.getId()));
+
+        verify(walletService).placeBuyStockOrder("user", "AAPL", 1);
+    }
+
+    @Test
+    public void sellStockShouldReturnEarnedAmount() throws Exception {
+        String uri = "/wallet/sell/1";
+
+        Wallet wallet = new Wallet();
+        wallet.setId(1L);
+
+        OpenPosition openPosition = new OpenPosition();
+        openPosition.setId(1L);
+        openPosition.setVolume(1);
+        openPosition.setWallet(wallet);
+
+        when(walletService.placeSellStockOrder("user", 1L)).thenReturn(130.00);
+
+        mockMvc.perform(get(uri))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$").value(130.00));
+
+        verify(walletService).placeSellStockOrder("user", 1L);
     }
 }
