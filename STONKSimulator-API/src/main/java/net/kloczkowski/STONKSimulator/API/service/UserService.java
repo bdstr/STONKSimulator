@@ -47,20 +47,20 @@ public class UserService extends CrudService<User> {
         return ((UserRepository) repository).findByUsername(username).orElseThrow(EntityNotFoundException::new);
     }
 
-    public User register(String username, String password) {
+    public User register(String username, String password) throws Exception {
         if (((UserRepository) repository).findByUsername(username).isEmpty()) {
             User newUser = new User();
 
             if (username.length() > 3) {
                 newUser.setUsername(username);
             } else {
-                throw new RuntimeException("Username too short");
+                throw new Exception("Username too short");
             }
 
             if (password != null && password.length() >= 8) {
                 newUser.setPassword(passwordEncoder.encode(password));
             } else {
-                throw new RuntimeException("Password too short");
+                throw new Exception("Password too short");
             }
 
             newUser.setAuthorities("ROLE_USER");
@@ -72,7 +72,7 @@ public class UserService extends CrudService<User> {
 
             return repository.save(newUser);
         } else {
-            throw new EntityNotFoundException();
+            throw new Exception("Username already taken");
         }
     }
 

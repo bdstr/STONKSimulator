@@ -118,7 +118,7 @@ class UserServiceTest {
     }
 
     @Test
-    public void registerSavesNewUserToDatabase() {
+    public void registerSavesNewUserToDatabase() throws Exception {
         User userWithId = new User();
         userWithId.setId(1L);
         userWithId.setUsername("user");
@@ -150,16 +150,16 @@ class UserServiceTest {
 
         assertThatThrownBy(() ->
                 userService.register("user", "pass"))
-                .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(Exception.class);
     }
 
     @Test
-    public void registerThrowsExceptionWhenUsernameTooShort() {
+    public void registerThrowsExceptionWhenUsernameTooShort() throws Exception {
         when(userRepository.findByUsername("us")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() ->
                 userService.register("us", "password"))
-                .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(Exception.class);
     }
 
     @Test

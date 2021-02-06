@@ -17,8 +17,9 @@ class AdminAuthorizationTest extends GenericAuthorizationTest {
         uris.put("/login", Set.of("POST"));
         uris.put("/register", Set.of("POST"));
         uris.put("/profile", Set.of("GET"));
-        uris.put("/wallet", Set.of("GET", "PUT"));
-        uris.put("/wallet/", Set.of("GET", "POST"));
+        uris.put("/wallet", Set.of("GET"));
+        uris.put("/wallet/buy", Set.of("POST"));
+        uris.put("/wallet/sell", Set.of("DELETE"));
         accessibleURIs = uris;
     }
 }
