@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Locale;
 
 @Service
 public class WalletService {
@@ -32,7 +33,7 @@ public class WalletService {
     }
 
     public OpenPosition placeBuyStockOrder(String username, String stockSymbol, double volume) throws Exception {
-        StockPrice stockPrice = getStockPriceFromApi(stockSymbol);
+        StockPrice stockPrice = getStockPriceFromApi(stockSymbol.toUpperCase(Locale.ROOT));
         Wallet wallet = getByUser(username);
         var priceOfDesiredVolume = stockPrice.getPrice() * volume;
 
@@ -40,15 +41,34 @@ public class WalletService {
             throw new Exception("Wallet balance too low");
         }
 
-        payForStock(wallet, priceOfDesiredVolume);
+        subtractFromBalance(wallet, priceOfDesiredVolume);
+
         OpenPosition openPosition = new OpenPosition();
         openPosition.setWallet(wallet);
+        openPosition.setStockSymbol(stockPrice.getSymbol());
         openPosition.setUnitPrice(stockPrice.getPrice());
         openPosition.setVolume(volume);
         openPosition.setTimestamp(LocalDateTime.now());
 
         openPositionRepository.save(openPosition);
         return openPosition;
+    }
+
+    public double placeSellStockOrder(String username, Long positionId) throws Exception {
+        OpenPosition openPosition = openPositionRepository.findById(positionId).orElseThrow(() -> new Exception("Cannot find position with given id"));
+        Wallet wallet = getByUser(username);
+
+        if (!openPosition.getWallet().getUser().getUsername().equals(username)) {
+            throw new Exception("Chosen position does not belong to current user");
+        }
+
+        StockPrice stockPrice = getStockPriceFromApi(openPosition.getStockSymbol());
+        var currentValueOfHeldStocks = openPosition.getVolume() * stockPrice.getPrice();
+
+        openPositionRepository.delete(openPosition);
+
+        addToBalance(wallet, currentValueOfHeldStocks);
+        return currentValueOfHeldStocks;
     }
 
     private StockPrice getStockPriceFromApi(String stockSymbol) throws Exception {
@@ -61,8 +81,16 @@ public class WalletService {
         }
     }
 
-    private void payForStock(Wallet wallet, double price) {
-        var newWalletBalance = wallet.getBalance() - price;
+    private void subtractFromBalance(Wallet wallet, double amount) {
+        var newWalletBalance = wallet.getBalance() - amount;
         wallet.setBalance(newWalletBalance);
+        walletRepository.save(wallet);
     }
+
+    private void addToBalance(Wallet wallet, double amount) {
+        var newWalletBalance = wallet.getBalance() + amount;
+        wallet.setBalance(newWalletBalance);
+        walletRepository.save(wallet);
+    }
+
 }

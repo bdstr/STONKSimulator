@@ -47,6 +47,17 @@ public class WalletController {
         }
     }
 
+    @DeleteMapping("/sell/{id}")
+    public ResponseEntity<?> sellStock(Principal principal, @PathVariable("id") Long positionId) {
+        try {
+            var payload = walletService.placeSellStockOrder(principal.getName(), positionId);
+
+            return new ResponseEntity<>(payload, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     private Function<Wallet, WalletDTO> walletToDTO() {
         return WalletDTO::new;
     }
