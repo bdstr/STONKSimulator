@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021_02_05-initial-positions-table
+      author: marcin.kloczkowski
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: positions
+      changes:
+        - createTable:
+            tableName: positions
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: position_id_pkey
+              - column:
+                  name: timestamp
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: unit_price
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: volume
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: wallet_id
+                  type: INT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: position_wallet_id_fkey
+                    references: wallets(id)

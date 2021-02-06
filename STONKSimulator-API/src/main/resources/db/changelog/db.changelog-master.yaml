@@ -4,6 +4,8 @@ databaseChangeLog:
       file: db/changelog/tables/init-wallets-table.yml
   - include:
       file: db/changelog/tables/init-users-table.yml
+  - include:
+      file: db/changelog/tables/init-positions-table.yml
   #   Data inserts
   - include:
       file: db/changelog/data/init-data-insert-wallets.yml
